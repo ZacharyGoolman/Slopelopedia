@@ -7,7 +7,7 @@ from .models import Location
 class LocationSerializer(serializers.LocationSerializer):
     class Meta:
         model = Location
-        fields = ['location', 'latitude', 'longitude', 'weather', 'post', 'difficulty', 'likes', 'dislikes']
+        fields = ['location', 'latitude', 'longitude', 'post', 'difficulty', 'likes', 'dislikes']
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
