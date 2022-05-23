@@ -4,10 +4,10 @@ from .models import Reply
 from .models import Location
 
 
-class LocationSerializer(serializers.LocationSerializer):
+class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ['location', 'latitude', 'longitude', 'post', 'difficulty', 'likes', 'dislikes']
+        fields = ['user','location', 'latitude', 'longitude', 'post', 'difficulty', 'likes', 'dislikes']
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

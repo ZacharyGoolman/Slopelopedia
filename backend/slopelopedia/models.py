@@ -5,9 +5,10 @@ from django.db import models
 from authentication.models import User 
 
 class Location(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     location = models.CharField(max_length=255)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
     post = models.TextField(max_length=5000)
     difficulty = models.CharField(max_length=20)
     likes = models.IntegerField(default=0)
