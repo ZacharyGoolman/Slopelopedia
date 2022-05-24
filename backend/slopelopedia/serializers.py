@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Comment 
 from .models import Reply
 from .models import Location
+from 
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -12,7 +13,8 @@ class LocationSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['user','video_id','text','likes','dislikes']
+        fields = ['user','text','likes','dislikes']
+    location_id = serializers.IntegerField(write_only=True)
 
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:

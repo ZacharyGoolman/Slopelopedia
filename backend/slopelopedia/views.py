@@ -12,7 +12,7 @@ from .models import Comment
 from .models import Reply
 
 
-# Location Views
+# Location API calls
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -33,7 +33,7 @@ def user_create_location(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# # Comments Views
+# # Comment API calls
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -55,16 +55,15 @@ def user_comment_detail(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def comment_by_id(request, location_id):       
+def comment_by_location_id(request, location_id):       
     if request.method == 'GET':
         comments = Comment.objects.filter(location_id=location_id)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data) 
 
-# Replies views
+# Replies  API calls 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -80,31 +79,34 @@ def user_replies_detail(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def replies_by_id(request, pk):
+def replies_by_comment_id(request, pk):
     replies = Reply.objects.filter(comment_id=pk)
     serializer = ReplySerializer(replies, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-@api_view('PUT')
-@permission_classes([IsAuthenticated])
-def user_likes_detail(request, pk):
-    location = get_object_or_404(Location, pk=pk)
-    if request.method == 'PUT':
-         if location.likes >= 0:
-            location.likes += 1
-            serializer = LocationSerializer(location, data=request.data, partial=True)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data)  
+# Location Likes and Dislikes API calls
+# Likes and dislikes wont need body information for postman testing
 
-@api_view('PUT')
-@permission_classes([IsAuthenticated])
-def user_dislikes_detail(request, pk):
-    location = get_object_or_404(Location, pk=pk)
-    if request.method == 'PUT':
-         if  location.dislikes >= 0:
-             location.dislikes += 1
-            serializer = LocationSerializer(location, data=request.data, partial=True)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data)  
+# @api_view('PUT')
+# @permission_classes([IsAuthenticated])
+# def user_likes_location(request, pk):
+#     user_likes = Location.objects.get(pk=pk)
+#     user_likes.likes = user_likes.likes + 1 
+#     serializer = LocationSerializer(user_likes, data=request.data, partial=True)
+#     if serializer.is_valid():
+#         serializer.save(location=request.location)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)  
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @api_view('PUT')
+# @permission_classes([IsAuthenticated])
+# def user_dislikes_location(request, pk):
+#     user_dislikes = Location.objects.get(pk=pk)
+#     user_dislikes.likes = user_dislikes.likes + 1 
+#     serializer = LocationSerializer(user_dislikes, data=request.data, partial=True)
+#     if serializer.is_valid():
+#         serializer.save(location=request.location)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)  
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
