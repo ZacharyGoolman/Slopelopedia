@@ -1,7 +1,6 @@
 from django.db import models
 
 # Create your models here.
-from django.db import models
 from authentication.models import User 
 
 class Location(models.Model):
@@ -19,6 +18,7 @@ class Comment(models.Model):
     text = models.CharField(max_length=255)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
+    location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.CASCADE)
 
 class Reply(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
