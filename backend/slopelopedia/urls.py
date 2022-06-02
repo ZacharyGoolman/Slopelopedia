@@ -12,5 +12,7 @@ urlpatterns = [
     path('replies/<int:comment_id>/', views.replies_by_comment_id),
     path('like-location/<int:pk>/', views.user_likes_location),
     path('dislike-location/<int:pk>/', views.user_dislikes_location),
+    path('likes-comment/<int:pk>', views.like_comment),
+    path('dislikes-comment/<int:pk>',views.dislike_comment),
 
 ]

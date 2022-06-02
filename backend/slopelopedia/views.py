@@ -63,6 +63,29 @@ def comment_by_location_id(request, location_id):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data) 
 
+# likes/dislikes for comments
+
+@api_view(['PATCH'])
+def like_comment(request,pk):
+    if request.method =="PATCH":
+        comment = get_object_or_404(Comment, pk=pk)
+        comment.likes += 1
+        serializer = CommentSerializer(comment,data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_202_ACCEPTED)
+
+@api_view(['PATCH'])
+def dislike_comment(request,pk):
+    if request.method =="PATCH":
+        comment = get_object_or_404(Comment, pk=pk)
+        comment.dislikes += 1
+        serializer = CommentSerializer(comment,data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_202_ACCEPTED)
+
+            
 # Replies  API calls 
 
 @api_view(['POST'])
@@ -83,6 +106,8 @@ def replies_by_comment_id(request, comment_id):
     replies = Reply.objects.filter(comment_id=comment_id)
     serializer = ReplySerializer(replies, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 # Location Likes and Dislikes API calls
 # Likes and dislikes wont need body information for postman testing
