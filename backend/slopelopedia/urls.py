@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('all/',views.get_all_locations_list),
     path('', views.user_create_location),
+    path('<pk>/', views.modify_locations),
     path('allcomments/',views.get_all_comments_list),
     path('comment/', views.user_comment_detail),
     path('commentbylocation/<int:location_id>/', views.comment_by_location_id),

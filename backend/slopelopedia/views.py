@@ -32,6 +32,22 @@ def user_create_location(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def modify_locations(request, pk):
+
+    locations = get_object_or_404(Location, pk=pk)
+
+    if request.method == 'PUT':
+        serializer = LocationSerializer(locations, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    if request.method == 'DELETE':
+        custom_response = {'You have just removed': locations.location}
+        locations.delete()
+        return Response(custom_response, status=status.HTTP_204_NO_CONTENT)
 
 # # Comment API calls
 
